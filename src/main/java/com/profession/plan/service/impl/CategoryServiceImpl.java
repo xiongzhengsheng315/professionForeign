@@ -10,8 +10,7 @@ package com.profession.plan.service.impl;
 
 import java.util.List;
 
-import javax.websocket.server.ServerEndpoint;
-
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +49,33 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<CategoryListVo> listCategorys() {
 		Category param = new Category();
 		param.setEnable(true);
+		param.setFid(0L);
+		List<Category> categorys = categoryMapper.select(param);
+		if(CollectionUtils.isEmpty(categorys)) {
+			return null;
+		}
+		List<CategoryListVo> categoryListVos = Lists.newArrayList();
+		for (Category category : categorys) {
+			CategoryListVo categoryListVo = new CategoryListVo();
+			categoryListVo.setId(category.getId());
+			categoryListVo.setName(category.getName());
+			categoryListVo.setCategoryListVos(getChildCategorys(category.getId()));
+			categoryListVos.add(categoryListVo);
+		}
+		return categoryListVos;
+	}
+
+	/**
+	 * @Title: listCategorys
+	 * @Description: 查询所有的子分类信息
+	 * @param  参数
+	 * @return List<CategoryListVo> 返回类型
+	 * @throws
+	 */
+	private List<CategoryListVo> getChildCategorys(Long id) {
+		Category param = new Category();
+		param.setEnable(true);
+		param.setFid(id);
 		List<Category> categorys = categoryMapper.select(param);
 		if(CollectionUtils.isEmpty(categorys)) {
 			return null;
