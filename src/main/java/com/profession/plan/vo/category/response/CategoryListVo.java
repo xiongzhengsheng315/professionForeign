@@ -8,6 +8,8 @@
  */
 package com.profession.plan.vo.category.response;
 
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -27,6 +29,9 @@ public class CategoryListVo {
 	@ApiModelProperty("类目名称")
 	private String name;
 
+	@ApiModelProperty("子类目信息")
+	private List<CategoryListVo> categoryListVos;
+	
 	public Long getId() {
 		return id;
 	}
@@ -41,5 +46,13 @@ public class CategoryListVo {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<CategoryListVo> getCategoryListVos() {
+		return categoryListVos;
+	}
+
+	public void setCategoryListVos(List<CategoryListVo> categoryListVos) {
+		this.categoryListVos = categoryListVos;
 	}
 }
