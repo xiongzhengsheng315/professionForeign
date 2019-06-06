@@ -13,14 +13,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.profession.plan.service.WorkService;
 import com.profession.plan.vo.ResponseVo;
-import com.profession.plan.vo.category.response.CategoryListVo;
-import com.profession.plan.vo.work.request.ListWorkParam;
 import com.profession.plan.vo.work.ressponse.WorkDetailVo;
 import com.profession.plan.vo.work.ressponse.WorkListVo;
 
@@ -94,11 +93,11 @@ public class WorkController {
 	 * @throws
 	 */
 	@ApiOperation(value="岗位详情", notes="岗位详情", position=3)
-	@RequestMapping(value = "/workDetail", method = RequestMethod.GET)
-	public ResponseVo<WorkDetailVo> queryWorkDetail(Long workId) {
+	@RequestMapping(value = "/workDetail/{workId}", method = RequestMethod.GET)
+	public ResponseVo<WorkDetailVo> queryWorkDetail(@PathVariable("workId") String workId) {
 		WorkDetailVo workDetailVo=null;
 		try {
-			workDetailVo = workService.findWorkById(workId);
+			workDetailVo = workService.findWorkById(Long.parseLong(workId));
 		} catch (Exception e) {
 			logger.error("查询岗位详情!", e);
 			return ResponseVo.ofFailure(500, "查询岗位详情!");
